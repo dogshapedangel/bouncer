@@ -1,0 +1,46 @@
+{
+  "content": "",
+  "tts": false,
+  "embeds": [
+    {
+      "id": 652627557,
+      "title": "Bounce Detected",
+      "description": "The following user was bounced from the server.",
+      "color": 2331883,
+      "fields": [
+        {
+          "id": 725119447,
+          "name": "User",
+          "value": "[username]",
+          "inline": true
+        },
+        {
+          "id": 687978454,
+          "name": "User ID",
+          "value": "[user ID]",
+          "inline": true
+        },
+        {
+          "id": 996299255,
+          "name": "Time",
+          "value": "[time]"
+        },
+        {
+          "id": 893045527,
+          "name": "Original Requestor",
+          "value": "[requestor]",
+          "inline": false
+        },
+        {
+          "id": 649133156,
+          "name": "Reason",
+          "value": "[reason]",
+          "inline": false
+        }
+      ]
+    }
+  ],
+  "components": [],
+  "actions": {},
+  "flags": 0
+}

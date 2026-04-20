@@ -1,0 +1,34 @@
+{
+  "content": "",
+  "tts": false,
+  "embeds": [
+    {
+      "id": 652627557,
+      "title": "Bounce - User Removed",
+      "description": "The following user has been removed from the Bounce list.",
+      "color": 2353978,
+      "fields": [
+        {
+          "id": 725119447,
+          "name": "Target User",
+          "value": "[username]",
+          "inline": true
+        },
+        {
+          "id": 687978454,
+          "name": "Target User ID",
+          "value": "[user ID]",
+          "inline": true
+        },
+        {
+          "id": 996299255,
+          "name": "Requested By",
+          "value": "[requesting user]"
+        }
+      ]
+    }
+  ],
+  "components": [],
+  "actions": {},
+  "flags": 0
+}

@@ -1,0 +1,9 @@
+services:
+  bouncer:
+    build: .
+    container_name: discord-bouncer
+    env_file:
+      - .env
+    volumes:
+      - ./data:/app/data
+    restart: unless-stopped

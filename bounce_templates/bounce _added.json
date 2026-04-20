@@ -1,0 +1,39 @@
+{
+  "content": "",
+  "tts": false,
+  "embeds": [
+    {
+      "id": 652627557,
+      "title": "Bounce - User Added",
+      "description": "The following user has been placed on the Bounce list.",
+      "color": 15409955,
+      "fields": [
+        {
+          "id": 725119447,
+          "name": "Target User",
+          "value": "[username]",
+          "inline": true
+        },
+        {
+          "id": 687978454,
+          "name": "Target User ID",
+          "value": "[user ID]",
+          "inline": true
+        },
+        {
+          "id": 996299255,
+          "name": "Requested By",
+          "value": "[requesting user]"
+        },
+        {
+          "id": 531469267,
+          "name": "Reason",
+          "value": "[reason]"
+        }
+      ]
+    }
+  ],
+  "components": [],
+  "actions": {},
+  "flags": 0
+}
