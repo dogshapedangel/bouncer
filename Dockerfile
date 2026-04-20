@@ -10,7 +10,6 @@ COPY src ./src
 COPY bounce_templates ./bounce_templates
 COPY .env.example ./.env.example
 
-RUN mkdir -p /app/data && chown -R node:node /app
-USER node
+RUN mkdir -p /app/data
 
 CMD ["npm", "start"]
