@@ -22,6 +22,18 @@ const guildId = process.env.DISCORD_GUILD_ID;
 const actionLogChannelId = process.env.ACTION_LOG_CHANNEL_ID?.trim() || null;
 const removeJoinMessagesOnBounce =
   (process.env.REMOVE_JOIN_MESSAGES_ON_BOUNCE ?? 'true').trim().toLowerCase() === 'true';
+const allowedCommandRoleIds = new Set(
+  (process.env.ALLOWED_COMMAND_ROLE_IDS || '')
+    .split(',')
+    .map((value) => value.trim())
+    .filter(Boolean)
+);
+const allowedCommandRoleNames = new Set(
+  (process.env.ALLOWED_COMMAND_ROLE_NAMES || '')
+    .split(',')
+    .map((value) => value.trim().toLowerCase())
+    .filter(Boolean)
+);
 
 const TEMPLATE_FILES = {
   bounceAdded: 'bounce _added.json',
@@ -93,6 +105,25 @@ function hasAdminRoleOrPermission(interaction) {
   }
 
   return member.roles?.cache?.some((role) => /admin/i.test(role.name)) ?? false;
+}
+
+function hasAllowedCommandAccess(interaction) {
+  const member = interaction.member;
+  if (!member) {
+    return false;
+  }
+
+  const usesExplicitRoleAllowList = allowedCommandRoleIds.size > 0 || allowedCommandRoleNames.size > 0;
+  if (!usesExplicitRoleAllowList) {
+    return hasAdminRoleOrPermission(interaction);
+  }
+
+  return (
+    member.roles?.cache?.some(
+      (role) =>
+        allowedCommandRoleIds.has(role.id) || allowedCommandRoleNames.has(role.name.trim().toLowerCase())
+    ) ?? false
+  );
 }
 
 async function resolveUserIdFromInput(guild, rawInput) {
@@ -442,7 +473,12 @@ client.on('interactionCreate', async (interaction) => {
     return;
   }
 
-  if (!hasAdminRoleOrPermission(interaction)) {
+  if (!hasAllowedCommandAccess(interaction)) {
+    const missingRoleReason =
+      allowedCommandRoleIds.size > 0 || allowedCommandRoleNames.size > 0
+        ? 'Missing required allowed role.'
+        : 'Missing admin permission/role.';
+
     await sendCommandOutcomeLog({
       interaction,
       templateKey: interaction.commandName === 'bounce' ? 'bounceAdded' : 'bounceRemoved',
@@ -450,12 +486,15 @@ client.on('interactionCreate', async (interaction) => {
       targetUserLabel: userInput,
       targetUserId: 'unknown',
       requestorLabel,
-      failureReason: 'Missing admin permission/role.',
+      failureReason: missingRoleReason,
       reason: interaction.commandName === 'bounce' ? interaction.options.getString('reason') || 'N/A' : 'N/A'
     });
 
     await interaction.reply({
-      content: 'Only admins can use this command.',
+      content:
+        allowedCommandRoleIds.size > 0 || allowedCommandRoleNames.size > 0
+          ? 'You do not have an allowed role to use this command.'
+          : 'Only admins can use this command.',
       flags: MessageFlags.Ephemeral
     });
     return;
